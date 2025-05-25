@@ -1,4 +1,4 @@
-name: nextjs-ecommerce
+name: nextjs-ecommerce # Ambiente de Desenvolvimento
 
 services:
   db:
@@ -9,15 +9,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=next_db
-
   app:
     container_name: app
     build: 
       context: ../pc-store
       dockerfile: ../docker/Dockerfile
     ports:
-      - 3000:8000
+      - 8000:3000
     volumes:
       - ../pc-store:/app
+      # - /app/node_modules # Preserva a node_modules no container
     depends_on:
       - db

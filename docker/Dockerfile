@@ -1,13 +1,18 @@
-FROM node:22-alpine
+FROM node:22-alpine AS base
+# ENV PNPM_HOME="/pnpm"
+# ENV PATH="$PNPM_HOME:$PATH"
+# RUN corepack enable
 
 WORKDIR /app
 
-RUN apk add pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY package.json pnpm-lock.yaml ./
+# RUN apk add --no-cache curl bash
+# RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+# ENV PATH="/root/.local/share/pnpm:${PATH}"
+
 COPY . .
+RUN pnpm install
 
-EXPOSE 3000
+CMD ["sh", "-c", "pnpm run dev"]
 
-# CMD [ "pnpm", "install", "&&", "pnpm", "run", "dev" ]
-CMD [ "sleep", "infinity" ]
